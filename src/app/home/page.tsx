@@ -3,6 +3,7 @@ import { useState } from "react";
 import styles from "./Home.module.css";
 import { useRouter } from 'next/navigation';
 import { useGameContext } from "../context/GameContext";
+import Board from "../components/board";
 
 export default function Home() {
   
@@ -30,42 +31,8 @@ export default function Home() {
   return (
     <>
       <div className={styles.page}>
-        {!check && (
-          <img
-            src="/images/Chess6x6.png"
-            alt="Tabuleiro 6x6"
-            className={styles.board}
-          />
-        )}
-        {check && (
-          <div
-            className={styles.board_dynamic}
-            style={{
-              display: "grid",
-              gridTemplateColumns: `repeat(${valueX}, 40px)`,
-              gridTemplateRows: `repeat(${valueY}, 40px)`,
-              marginTop: "20px",
-
-              borderRadius: "8px",
-              overflow: "hidden",
-            }}
-          >
-            {Array.from({ length: valueX * valueY }).map((_, index) => (
-              <div
-                key={index}
-                style={{
-                  width: "40px",
-                  height: "40px",
-                  boxShadow: "0 10px 30px rgba(0, 0, 0, 0.6)",
-                  backgroundColor:
-                    (Math.floor(index / valueX) + (index % valueX)) % 2 === 0
-                      ? "#646262"
-                      : "#3d3b3b",
-                }}
-              />
-            ))}
-          </div>
-        )}
+        <Board/>
+        
         <div className={styles.div_buttons}>
           <div className={styles.div_scale_check}>
             <div className={styles.div_scale}>
