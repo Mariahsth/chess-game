@@ -91,7 +91,14 @@
   height: 50px;
   width: 50px;
 }
-
+.check:hover {
+  color: green;
+  font-weight: 900;
+}
+.checkActive {
+  color: green;
+  font-weight: 900;
+}
 .play_button {
   position: relative;
   background: radial-gradient(circle at center, #3A5EFF 0%, #5B8CFF 100%);

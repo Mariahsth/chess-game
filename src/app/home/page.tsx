@@ -54,7 +54,7 @@ export default function Home() {
                 onChange={(e) => setValueY(Number(e.target.value))}
               />
             </div>
-            <button className={styles.check} onClick={checkScale}>
+            <button className={`${styles.check} ${check ? styles.checkActive : ''}`} onClick={checkScale}>
               ✔
             </button>
           </div>

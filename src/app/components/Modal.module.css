@@ -1,0 +1,89 @@
+.modal{
+
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.main_container{
+    border: 1px solid rgba(167, 161, 161, 0.623);
+    border-radius: 16px;
+    background: linear-gradient(to bottom, #1c1c20, #333641);
+    font-family: var(--font-kanit);
+    color: white;
+    text-align: center;
+
+}
+
+.winner_container{
+    width: 100%;
+    border-bottom: 1px solid rgba(167, 161, 161, 0.623);
+    padding:3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.star_container{
+    border: 1px solid rgba(167, 161, 161, 0.623);
+    border-radius: 16px;
+    padding: 2rem;
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+    background-color: rgba(41, 42, 43, 0.562);
+}
+
+.star{
+    position: absolute;
+    top:25%;
+    left:25%;
+}
+
+
+.buttons_container{
+    padding: 3rem;
+    display: flex;
+    gap: 2rem;
+}
+
+.buttons_home{
+    padding: 0.5rem 1rem;
+    background: linear-gradient(to right, #1c1c24a6, #4242428a, #1c1c24a6);
+    color: rgba(255, 255, 255, 0.651);
+    font-family: var(--font-kanit);
+    border-radius: 8px;
+    border: 1px solid rgba(167, 161, 161, 0.623);
+    font-weight: 600;
+    cursor: pointer;
+
+}
+.buttons_restart{
+    padding: 0.5rem 1rem;
+    background: linear-gradient(to right, #2b6ab3d5, #4391bed5, #2b6ab3d5);
+    color: rgba(255, 255, 255, 0.651);
+    font-family: var(--font-kanit);
+    border-radius: 8px;
+    border: 1px solid rgba(167, 161, 161, 0.623);
+    font-weight: 600;
+    cursor: pointer;
+
+
+}
+.buttons_home:hover{
+    background: linear-gradient(to right, #353b41bd, #464d55bd, #353b41bd);
+
+
+}
+.buttons_restart:hover{
+    background: linear-gradient(to right, #353b41bd, #464d55bd, #353b41bd);
+
+
+}
