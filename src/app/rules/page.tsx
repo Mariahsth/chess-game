@@ -22,7 +22,6 @@ export default function Rules() {
           </div>
         </div>
         <Pieces/>
-
         <div className={styles.win_container}>
           <div className={styles.win_title}>
             <h3>How to Win the Game</h3>
