@@ -1,5 +1,5 @@
 "use client";
-import Board from "../components/board";
+import Board from "../components/Board/board";
 import { useEffect } from "react";
 import { useGameContext } from "../context/GameContext";
 

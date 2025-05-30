@@ -1,12 +1,11 @@
 "use client";
 import { useState } from "react";
 import styles from "./Settings.module.css";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
 import { useGameContext } from "../context/GameContext";
-import Board from "../components/board";
+import Board from "../components/Board/board";
 
 export default function Settings() {
-  
   const { valueX, valueY, setValueX, setValueY } = useGameContext();
   const [check, setCheck] = useState(false);
   const router = useRouter();
@@ -33,8 +32,8 @@ export default function Settings() {
       <div className={styles.page}>
         <h2>Board Setting</h2>
         <p>Choose the scale of the board before game play</p>
-        <Board/>
-        
+        <Board />
+
         <div className={styles.div_buttons}>
           <div className={styles.div_scale_check}>
             <div className={styles.div_scale}>
@@ -56,7 +55,10 @@ export default function Settings() {
                 onChange={(e) => setValueY(Number(e.target.value))}
               />
             </div>
-            <button className={`${styles.check} ${check ? styles.checkActive : ''}`} onClick={checkScale}>
+            <button
+              className={`${styles.check} ${check ? styles.checkActive : ""}`}
+              onClick={checkScale}
+            >
               ✔
             </button>
           </div>
