@@ -12,10 +12,11 @@
   font-family: var(--font-kanit);
   margin: 2rem 0;
   flex-grow: 4;
+  text-align: center;
+
 }
 .page h2{
   font-size: 4em;
-
 }
 
 .div_buttons{
@@ -146,14 +147,16 @@
 @media (max-width: 600px) {
 
   .page{
-    padding: 200px 0;
+    padding:  0;
   }
   .div_buttons{
     flex-direction: column;
     width: 100%;
     gap: 2rem;
   }
-
+  .page h2{
+    font-size: 2em;
+  }
   .div_scale_check{
     width: 75%;
 
@@ -174,6 +177,6 @@
   }
   
   .play_button{
-    width: 100%;
+    width: 80%;
   }
 }
