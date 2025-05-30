@@ -1,5 +1,5 @@
 "use client";
-import Pieces from "../components/pieces";
+import Pieces from "../components/Pieces";
 import styles from "./Rules.module.css";
 import { useRouter } from 'next/navigation';
 
