@@ -1,5 +1,6 @@
 # Chess Game  
-Jogo de xadrez utilizando Next.js 
+Jogo de xadrez contra IA utilizando Next.js 
+Esse projeto foi realizado em um desafio de desenvolvimento
 
 
 ![chessGame](https://github.com/user-attachments/assets/393baadb-4b43-4e88-9316-4fe56eec6b3f)
