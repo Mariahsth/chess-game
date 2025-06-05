@@ -9,6 +9,7 @@ Jogo de xadrez utilizando Next.js
 
 ## ✔️ Principais tecnologias utilizadas
 * React
+* CSS
 * Next.js
 * Typescript
   
