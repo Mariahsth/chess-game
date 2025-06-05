@@ -1,5 +1,11 @@
+// Renomeie o arquivo para: getBlackAIMove.ts
 import { Piece } from "../types";
-import { getDeveloperMoves, getDesignerMoves, getPOMoves, getDeveloperCaptures } from "./usePieceMoves";
+import {
+  getDeveloperMoves,
+  getDesignerMoves,
+  getPOMoves,
+  getDeveloperCaptures,
+} from "./usePieceMoves";
 
 interface AIMoveResult {
   newBoard: (Piece | null)[];
@@ -7,7 +13,7 @@ interface AIMoveResult {
   winner?: "white" | "black";
 }
 
-export function useBlackAIMove(
+export function getBlackAIMove(
   board: (Piece | null)[],
   valueX: number,
   valueY: number
@@ -20,8 +26,6 @@ export function useBlackAIMove(
     winner?: "white" | "black";
   }[] = [];
 
-
-  
   for (let i = 0; i < board.length; i++) {
     const piece = board[i];
     if (!piece || piece.color !== "black") continue;
@@ -37,45 +41,49 @@ export function useBlackAIMove(
     }
 
     for (const move of possibleMoves) {
-      const target = board[move];
+      const boardCopy = [...board]; 
+      const movingPiece = boardCopy[i];
+    
       let score = 1;
-
-      const newBoard = [...board];
-      const movingPiece = newBoard[i];
-
+      let winner: "black" | undefined;
+    
       if (movingPiece?.type === "developer") {
         const captured = getDeveloperCaptures(i, move, board, valueX, valueY, "black");
-        score += captured.length * 10; // 10 pontos por peça capturada
+        score += captured.length * 10;
         for (const idx of captured) {
-          newBoard[idx] = null;
+          if (board[idx]?.type === "productOwner") {
+            winner = "black";
+          }
+          boardCopy[idx] = null;
         }
       }
-
-      if (target?.color === "white") {
-        score += target.type === "productOwner" ? 100 : 10;
-      }
-
+    
+      const target = board[move];
       if (target?.type === "productOwner") {
-        newBoard[move] = movingPiece;
-        newBoard[i] = null;
-        console.log("💥 AI capturou o Product Owner!", { from: i, to: move, score });
-        allMoves.push({ from: i, to: move, score: 1000, newBoard, winner: "black" });
-        continue;
+        winner = "black";
+        score += 100;
+      } else if (target?.color === "white") {
+        score += 10;
       }
-
-      newBoard[move] = movingPiece;
-      newBoard[i] = null;
-
-      console.log("📍 AI avaliou movimento", { from: i, to: move, score });
-      allMoves.push({ from: i, to: move, score, newBoard });
+    
+      boardCopy[move] = movingPiece;
+      boardCopy[i] = null;
+    
+      allMoves.push({
+        from: i,
+        to: move,
+        score,
+        newBoard: boardCopy,
+        winner,
+      });
     }
+    
   }
 
   if (allMoves.length === 0) return null;
 
   allMoves.sort((a, b) => b.score - a.score);
   const best = allMoves[0];
-
   return {
     newBoard: best.newBoard,
     lastMove: { from: best.from, to: best.to },

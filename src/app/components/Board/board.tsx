@@ -11,7 +11,7 @@ import {
 import { Piece } from "../../types";
 import WinnerModal from "../Modal/winnerModal";
 import { useRouter } from "next/navigation";
-import {useBlackAIMove} from '../../hooks/useBlackAIMove'
+import {getBlackAIMove} from '../../hooks/getBlackAIMove'
 
 const generateInitialBoard = (
   valueX: number,
@@ -56,12 +56,14 @@ export default function Board() {
   useEffect(() => {
     if (isPlayMode && turn === "black") {
       const timer = setTimeout(() => {
-        const aiMove = useBlackAIMove(board, valueX, valueY);
+        const aiMove = getBlackAIMove(board, valueX, valueY);
         if (aiMove) {
           setBoard(aiMove.newBoard);
           setLastMove(aiMove.lastMove);
-          if (aiMove.winner) {
-            setWinner(aiMove.winner);
+          if (aiMove.winner ==='black') {
+            console.log('cheguei no aiMove.winner=black')
+            setWinner('black');
+            return
           } else {
             setTurn("white");
           }
@@ -260,6 +262,7 @@ export default function Board() {
             router.push(`/play`);
           }}
           onGoHome={() => {
+            setWinner(null);
             router.push(`/`);
           }}
         />
