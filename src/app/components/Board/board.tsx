@@ -11,6 +11,7 @@ import {
 import { Piece } from "../../types";
 import WinnerModal from "../Modal/winnerModal";
 import { useRouter } from "next/navigation";
+import {useBlackAIMove} from '../../hooks/useBlackAIMove'
 
 const generateInitialBoard = (
   valueX: number,
@@ -31,8 +32,7 @@ const generateInitialBoard = (
 
 export default function Board() {
   const router = useRouter();
-  const [winner, setWinner] = useState<"white" | "black" | null>(null);
-  const { valueX, valueY, isPlayMode } = useGameContext();
+  const { valueX, valueY, isPlayMode, winner, setWinner } = useGameContext();
   const [board, setBoard] = useState<(Piece | null)[]>([]);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [possibleMoves, setPossibleMoves] = useState<number[]>([]);
@@ -55,83 +55,23 @@ export default function Board() {
 
   useEffect(() => {
     if (isPlayMode && turn === "black") {
-      const timer = setTimeout(() => makeBlackMove(), 1000);
+      const timer = setTimeout(() => {
+        const aiMove = useBlackAIMove(board, valueX, valueY);
+        if (aiMove) {
+          setBoard(aiMove.newBoard);
+          setLastMove(aiMove.lastMove);
+          if (aiMove.winner) {
+            setWinner(aiMove.winner);
+          } else {
+            setTurn("white");
+          }
+        }
+      }, 1000);
       return () => clearTimeout(timer);
     }
-  }, [turn, isPlayMode]);
+  }, [turn, isPlayMode, board, valueX, valueY]);
 
-  const makeBlackMove = () => {
-    const blackMoves: {
-      from: number;
-      to: number;
-      captures: number[];
-      targetIsPO: boolean;
-    }[] = [];
-
-    board.forEach((piece, index) => {
-      if (piece?.color === "black") {
-        let moves: number[] = [];
-        if (piece.type === "developer") {
-          moves = getDeveloperMoves(index, board, valueX, valueY, "black");
-        } else if (piece.type === "designer") {
-          moves = getDesignerMoves(index, board, valueX, valueY, "black");
-        } else if (piece.type === "productOwner") {
-          moves = getPOMoves(index, board, valueX, valueY, "black");
-        }
-
-        moves.forEach((to) => {
-          const captures =
-            piece.type === "developer"
-              ? getDeveloperCaptures(
-                  index,
-                  to,
-                  board,
-                  valueX,
-                  valueY,
-                  "black"
-                )
-              : [];
-          const targetIsPO = board[to]?.type === "productOwner" ||
-            captures.some((idx) => board[idx]?.type === "productOwner");
-
-          blackMoves.push({
-            from: index,
-            to,
-            captures,
-            targetIsPO,
-          });
-        });
-      }
-    });
-
-    if (blackMoves.length === 0) return;
-
-    // Priorize captura do PO inimigo
-    const poCapture = blackMoves.find((move) => move.targetIsPO);
-    const moveToPlay = poCapture ?? blackMoves[Math.floor(Math.random() * blackMoves.length)];
-
-    const newBoard = [...board];
-    const movingPiece = board[moveToPlay.from];
-
-    moveToPlay.captures.forEach((idx) => {
-      newBoard[idx] = null;
-    });
-
-    if (board[moveToPlay.to]?.type === "productOwner") {
-      setWinner("black");
-    }
-
-    newBoard[moveToPlay.to] = movingPiece;
-    newBoard[moveToPlay.from] = null;
-
-    setBoard(newBoard);
-    setLastMove({ from: moveToPlay.from, to: moveToPlay.to });
-
-    if (!moveToPlay.targetIsPO) {
-      setTimeout(() => setLastMove(null), 3000);
-      setTurn("white");
-    }
-  };
+  
 
   const handleClick = (index: number) => {
     if (!isPlayMode) return;
@@ -310,8 +250,7 @@ export default function Board() {
 
       {winner && (
         <WinnerModal
-          winner={winner}
-          onRestart={() => {
+            onRestart={() => {
             setBoard(generateInitialBoard(valueX, valueY));
             setTurn("white");
             setLastMove(null);

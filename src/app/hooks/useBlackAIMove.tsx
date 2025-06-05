@@ -20,6 +20,8 @@ export function useBlackAIMove(
     winner?: "white" | "black";
   }[] = [];
 
+
+  
   for (let i = 0; i < board.length; i++) {
     const piece = board[i];
     if (!piece || piece.color !== "black") continue;
@@ -38,23 +40,25 @@ export function useBlackAIMove(
       const target = board[move];
       let score = 1;
 
-      if (target?.color === "white") {
-        score = target.type === "productOwner" ? 100 : 10;
-      }
-
       const newBoard = [...board];
       const movingPiece = newBoard[i];
 
       if (movingPiece?.type === "developer") {
         const captured = getDeveloperCaptures(i, move, board, valueX, valueY, "black");
+        score += captured.length * 10; // 10 pontos por peça capturada
         for (const idx of captured) {
           newBoard[idx] = null;
         }
       }
 
+      if (target?.color === "white") {
+        score += target.type === "productOwner" ? 100 : 10;
+      }
+
       if (target?.type === "productOwner") {
         newBoard[move] = movingPiece;
         newBoard[i] = null;
+        console.log("💥 AI capturou o Product Owner!", { from: i, to: move, score });
         allMoves.push({ from: i, to: move, score: 1000, newBoard, winner: "black" });
         continue;
       }
@@ -62,6 +66,7 @@ export function useBlackAIMove(
       newBoard[move] = movingPiece;
       newBoard[i] = null;
 
+      console.log("📍 AI avaliou movimento", { from: i, to: move, score });
       allMoves.push({ from: i, to: move, score, newBoard });
     }
   }
